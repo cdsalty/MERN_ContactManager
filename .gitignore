@@ -1,5 +1,9 @@
 node_modules
-./node_modules
+node_modules/
 
 .notes.txt
 notes.txt
+
+
+config/db.js
+config/default.json
