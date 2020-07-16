@@ -8,7 +8,7 @@ app.get("/", (req, res) =>
 	})
 );
 
-// Define Routes
+// Define Route(s) and location of the routes file:
 app.use("/api/users", require("./routes/users"));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/contacts", require("./routes/contacts"));
