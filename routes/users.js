@@ -4,8 +4,10 @@ const express = require("express");
 const router = express.Router();
 
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const config = require("config");
 
-const {check, validationResult} = require("express-validator/check"); // https://express-validator.github.io/docs/
+const {check, validationResult} = require("express-validator"); // https://express-validator.github.io/docs/ (notes said not to use '/check')
 
 const User = require("../models/User");
 
@@ -44,12 +46,29 @@ router.post(
 				email: email,
 				password: password
 			});
-			// this has only created the new user; * need to encrypt/hash the password
+			// this has only created the new user; need to encrypt/hash the password
 			const salt = await bcrypt.genSalt(10); // 10 determines how secure the salt is... 10 is default
 			user.password = await bcrypt.hash(password, salt); // this will create a hashed password that will then be assigned to the user object.
 			await user.save(); // (a)wait until everything has completed and THEN save the new user
-			// will need to also send back a json web token
-			res.send("Creating/Saving User functionality successful");
+			// res.send("Creating/Saving User functionality successful");
+			// JSON WEB TOKEN
+			const payload = {
+				user: {
+					id: user.id // the user.id gives all the information needed for a contact
+				}
+			};
+
+			jwt.sign(
+				payload,
+				config.get("jwtSecret"),
+				{
+					expiresIn: 360000 // 3600 is one hour and will be changed back for production
+				},
+				(err, token) => {
+					if (err) throw err;
+					res.json({token});
+				}
+			);
 		} catch (err) {
 			console.error(err.message);
 			res.status(500).send("Server Error");
