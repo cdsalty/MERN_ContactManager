@@ -6,7 +6,10 @@ const app = express();
 // Connect Database
 connectDB();
 
-// first endpoint:
+// Init Middleware
+app.use(express.json({extended: false})); // gives access to req.body
+
+// first test endpoint:
 app.get("/", (req, res) =>
 	res.json({
 		message: "Welcome to the Contact Keeper API brought to you by Christopher Soltis"
