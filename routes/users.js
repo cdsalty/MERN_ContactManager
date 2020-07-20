@@ -51,22 +51,24 @@ router.post(
 			user.password = await bcrypt.hash(password, salt); // this will create a hashed password that will then be assigned to the user object.
 			await user.save(); // (a)wait until everything has completed and THEN save the new user
 			// res.send("Creating/Saving User functionality successful");
-			// JSON WEB TOKEN
+			// JSON WEB TOKEN (create payload with the info to send)
 			const payload = {
 				user: {
-					id: user.id // the user.id gives all the information needed for a contact
+					id: user.id // the user.id returns info needed for a contact
 				}
 			};
-
+			// Sign JWT to generate the token (pass the payload, secret, and object with the options)
 			jwt.sign(
 				payload,
 				config.get("jwtSecret"),
+				// creating object of options:
 				{
 					expiresIn: 360000 // 3600 is one hour and will be changed back for production
 				},
+				// callback function
 				(err, token) => {
 					if (err) throw err;
-					res.json({token});
+					res.json({token}); // return token
 				}
 			);
 		} catch (err) {
