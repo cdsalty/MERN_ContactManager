@@ -19,7 +19,7 @@ const ContactSchema = mongoose.Schema({
 	},
 
 	phone: {
-		type: Number
+		type: String // originally had as number and caused good headache
 		// removed required but will change if necessary
 	},
 

@@ -17,7 +17,7 @@ router.get("/", auth, async (req, res) => {
 		// return the contacts from above:
 		res.json(contacts);
 	} catch (error) {
-		console.error(`error message from getting contacts is ${err.message}`);
+		console.error(`error message from getting contacts is ${error.message}`);
 		res.status(500).send("Server Error");
 	}
 });
@@ -25,14 +25,15 @@ router.get("/", auth, async (req, res) => {
 // ------			------			------			------			------			------			------			------			------			------
 
 // @route url:    POST api/contacts (http://localhost:5000/api/contacts)
-// @description:  Add a New Contact
+// @description:  Add a New Contact (need: name, email, phone, type and user)
 // @access perm:  Private **
 router.post(
 	"/",
+	// brackets allow use of mulitple middleware functions
 	[
 		auth,
 		[
-			// check to make sure name is not left empty
+			// check if name is empty (name is the only required field)
 			check("name", "Name is required")
 				.not()
 				.isEmpty()
@@ -40,29 +41,33 @@ router.post(
 	],
 	async (req, res) => {
 		// Start with error checking
-		const errors = validationResult(req); // brought in at the top; next check if it's empty
+		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
+			// if errors are not empty
 			return res.status(400).json({
-				errors: errors.array() // will return an array of all errors
+				errors: errors.array() // returns array of all errors
 			});
 		}
-		// pull out the data in the body
+		// pull out the data from/in the body
 		const {name, email, phone, type} = req.body;
 
 		try {
-			// Create the data/layout for a New contact:
+			// Create a New contact and pass in an object with the field data
 			const newContact = new Contact({
 				name,
 				email,
 				phone,
-				type,
-				user: req.user.id
+				type, // personal or professional
+				user: req.user.id // is taken from req.user of the auth middleware
 			});
-			// create the contact and save
-			const contact = await newContact.save();
+
+			// store newContact in a variable to save to the database using .save()
+			const contact = await newContact.save(); // newContact is the contact instance
 
 			res.json(contact);
-		} catch (error) {}
+		} catch (error) {
+			console.error(`Creating New Contact Error Message: ${error.message}`);
+		}
 	}
 );
 
