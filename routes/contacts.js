@@ -114,10 +114,31 @@ router.put("/:id", auth, async (req, res) => {
 // ------			------			------			------			------			------			------			------			------			------
 
 // @description:  Delete contact
-// @route url:    DELETE api/contacts/:id
+// @route url:    DELETE api/contacts/:id	=> http://localhost:5000/api/contacts/5f16707097058b106ccbcadf
 // @access perm:  Private **
-router.delete("/:id", (req, res) => {
-	res.send("Delete a contact");
+router.delete("/:id", auth, async (req, res) => {
+	try {
+		// Start off by getting the contact from the user's contacts
+		let contact = await Contact.findById(req.params.id); // findById will search the ":id" in the url
+		if (!contact) return res.status(404).json({message: "No contact found to update"});
+
+		// Security Step: Make sure user owns contact. (prevent someone from changing a contact's info using curl, postman or another tool on the backend)
+		if (contact.user.toString() !== req.user.id) {
+			// toString allows the comparision to correctly compare. if not, they would be two different types and would never match
+			return res
+				.status(401)
+				.json({message: "Not Authorized to make changes to a user's contact"});
+		}
+
+		// DELETE contact (does not need a variable; be sure to use Remove() because delete() is depricated)
+		await Contact.findByIdAndRemove(req.params.id);
+		res.json({message: "Contact has been successfully removed"}); // return the updated/new contact information
+	} catch (error) {
+		console.error(`error message from getting contacts is ${error.message}`);
+		res.status(500).send("Server Error");
+	}
+	// TO TEST:
+	// - inside of postman, add a contact's user id to the url and inside headers, x-auth-token and set the value to the user's token
 });
 
 // ------			------			------			------			------			------			------			------			------			------
