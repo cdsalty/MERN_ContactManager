@@ -73,18 +73,48 @@ router.post(
 
 // ------			------			------			------			------			------			------			------			------			------
 
-// @route url:    PUT api/contacts/:id (if you are going to update a contact, you need to be able to update a SPECIFIC(:id) contact)
-// @description:  Update contact
-// @access perm:  Private **
-router.put("/:id", (req, res) => {
-	// remember to update route with ":id"
-	res.send("Update a contact");
+// @description:  UPDATE contact
+// @route url:    PUT api/contacts/:id (remember to use the ":id" from the route to update )
+// @access perm:  ** Private **
+router.put("/:id", auth, async (req, res) => {
+	// Pull out the data from the request
+	const {name, email, phone, type} = req.body;
+	// Build contact object (based of the fields submitted from above)
+	const contactFields = {};
+	if (name) contactFields.name = name;
+	if (email) contactFields.email = email;
+	if (phone) contactFields.phone = phone;
+	if (type) contactFields.type = type;
+
+	try {
+		let contact = await Contact.findById(req.params.id); // findById will search the ":id" in the url
+		if (!contact) return res.status(404).json({message: "No contact found to update"});
+
+		// Security Step: Make sure user owns contact. (prevent someone from changing a contact's info using curl, postman or another tool on the backend)
+		if (contact.user.toString() !== req.user.id) {
+			// toString allows the comparision to correctly compare. if not, they would be two different types and would never match
+			return res
+				.status(401)
+				.json({message: "Not Authorized to make changes to a user's contact"});
+		}
+
+		// find and update the contact
+		contact = await Contact.findByIdAndUpdate(
+			req.params.id,
+			{$set: contactFields}, // mongo to set the new contact to the data from contactFields
+			{new: true}
+		); // if the contact isn't there, then create new contact
+		res.json(contact); // return the updated/new contact information
+	} catch (error) {
+		console.error(`error message from getting contacts is ${error.message}`);
+		res.status(500).send("Server Error");
+	}
 });
 
 // ------			------			------			------			------			------			------			------			------			------
 
-// @route url:    DELETE api/contacts/:id
 // @description:  Delete contact
+// @route url:    DELETE api/contacts/:id
 // @access perm:  Private **
 router.delete("/:id", (req, res) => {
 	res.send("Delete a contact");
