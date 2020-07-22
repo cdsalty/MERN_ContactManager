@@ -13,7 +13,6 @@ const App = () => {
 				<Navbar />
 				<div className='container'>
 					<Switch>
-						{/* Temp setup until I create the Home and About page */}
 						<Route exact path='/' component={Home} />
 						<Route exact path='/about' component={About} />
 					</Switch>
