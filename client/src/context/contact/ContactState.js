@@ -18,23 +18,23 @@ const ContactState = (props) => {
 		contacts: [
 			{
 				id: 1,
-				name: "Jill-SayItAin't Johnson",
+				name: "Jill Johnson",
 				email: "jjjustsayin@yahoo.com",
-				phone: 111 - 111 - 1111,
+				phone: "111-111-1111",
 				type: "personal"
 			},
 			{
 				id: 2,
 				name: "Sara Wacks",
 				email: "saraiswacks@gmail.com",
-				phone: 222 - 222 - 2222,
+				phone: "123-456-7890",
 				type: "personal"
 			},
 			{
 				id: 3,
-				name: "Julia Almine",
-				email: "alminej@aol.com",
-				phone: 333 - 333 - 3333,
+				name: "Thealla Becrasey",
+				email: "TheyAllBeCrazy@aol.com",
+				phone: "555-555-5555",
 				type: "professional"
 			}
 		]
