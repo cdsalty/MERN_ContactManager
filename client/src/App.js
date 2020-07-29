@@ -27,4 +27,4 @@ const App = () => {
 export default App;
 
 // Why use Fragment over React.Fragment or <></> ?
-// Took in ContactState and placed it around everything, including the Router...
+// Took in ContactState and placed it around everything, including the Router... Contact state is passing in the context provider.

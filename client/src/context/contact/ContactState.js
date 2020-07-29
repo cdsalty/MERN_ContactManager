@@ -1,6 +1,6 @@
 import React, {useReducer} from "react"; // gives access to state and to dispatch in order to dispatch to the reducer
 import uuid from "uuid";
-import ContactContext from "./contactContext"; // not sure about the naming convention?? review later.
+import ContactContext from "./contactContext"; // to access contactContext to share state (const contactContext = createContext();)
 import contactReducer from "./contactReducer";
 import {
 	ADD_CONTACT,
@@ -10,9 +10,9 @@ import {
 	UPDATE_CONTACT,
 	FILTER_CONTACTS,
 	CLEAR_FILTER
-} from "../types";
+} from "../types"; // only adding the one's that deal with contacts
 
-// create inital state  (initial value will be contacts but further along, I will have request made to the backend to fill this)
+// Create the Inital State: (initial value will be contacts; but further along, I will have request made to the backend to fill this)
 const ContactState = (props) => {
 	const initialState = {
 		contacts: [
@@ -39,7 +39,8 @@ const ContactState = (props) => {
 			}
 		]
 	};
-	// pulling out "state and dispatch" from the "useReducer" hook (will use it to access the contacts states in the provider value)
+
+	// pull out "state and dispatch" from "useReducer" (will be used to access the contacts states in the provider value)
 	const [state, dispatch] = useReducer(contactReducer, initialState); // state allows access anything inside the state, dispatch for dispatching objects to the reducer
 
 	// ACTOINS
@@ -58,10 +59,10 @@ const ContactState = (props) => {
 
 	// CLEAR FILTER for Contacts (from any filter created from above function)
 
-	// Wrapping the provider around the main/entire application
+	// return the providers in order to wrap the entire application with this context
 	return (
 		<ContactContext.Provider
-			// anything that needs to be accessed from other components, including state and "actions"
+			// anything that needs to be accessed from other components, including "state" and "actions" will need to go here
 			// { props.children } tells React where the child components will be rendered
 			value={{
 				contacts: state.contacts
@@ -74,4 +75,4 @@ const ContactState = (props) => {
 
 export default ContactState;
 
-// we get access to state since we bring in useReducer... this is how I was able to bring in 'state' to contacts.
+// we get access to state since we bring in useReducer, which has state... this is how I could bring in 'state' to contacts.
