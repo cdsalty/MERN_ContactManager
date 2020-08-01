@@ -1,5 +1,5 @@
 import React, {useReducer} from "react"; // gives access to state and to dispatch in order to dispatch to the reducer
-import uuid from "uuid";
+import {v4 as uuidv4} from "uuid";
 import ContactContext from "./contactContext"; // to access contactContext to share state (const contactContext = createContext();)
 import contactReducer from "./contactReducer";
 import {
@@ -43,9 +43,14 @@ const ContactState = (props) => {
 	// pull out "state and dispatch" from "useReducer" (will be used to access the contacts states in the provider value)
 	const [state, dispatch] = useReducer(contactReducer, initialState); // state allows access anything inside the state, dispatch for dispatching objects to the reducer
 
-	// ACTOINS
+	// List of ACTINS
 
 	// ADD Contact
+	const addContact = (contact) => {
+		contact.id = uuidv4(); // will use mongo id at later point
+		dispatch({type: ADD_CONTACT, payload: contact}); // dispatch this type and what to include in the payload.
+	};
+	// ** Be sure to pass it to the Provider to access it (anytime you want to access through a component from our contacts, it must be added here.)
 
 	// DELETE Contact
 
@@ -65,7 +70,8 @@ const ContactState = (props) => {
 			// anything that needs to be accessed from other components, including "state" and "actions" will need to go here
 			// { props.children } tells React where the child components will be rendered
 			value={{
-				contacts: state.contacts
+				contacts: state.contacts,
+				addContact
 			}}
 		>
 			{props.children}

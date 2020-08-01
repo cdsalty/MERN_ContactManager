@@ -1,31 +1,42 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react"; // to submit and add contacts to state, need useContext
+import ContactContext from "../../context/contact/contactContext"; // to access state
 
 const ContactForm = () => {
-	const [contact, setContact] = [
-		{
-			name: "",
-			email: "",
-			phone: "",
-			type: "personal" // default
-		}
-	];
+	// initialize context to use(to give access to any state or methods; we need a function: addContact)
+	const contactContext = useContext(ContactContext);
+
+	const [contact, setContact] = useState({
+		name: "",
+		email: "",
+		phone: "",
+		type: "personal" // default
+	});
 
 	const {name, email, phone, type} = contact; // destructure (pulling the values from contacts)
 
-	// Event Handler
 	const onChange = (e) => {
-		// update the target's name to the value given(get the key of the target(in this case, it's name) and set it to the user's input.)
 		setContact({...contact, [e.target.name]: e.target.value});
 	};
 
+	const onSubmit = (e) => {
+		e.preventDefault();
+		contactContext.addContact(contact); // once the form is submitted, it will look for addContact in ContactState and pass in the contact object
+		setContact({
+			name: "",
+			email: "",
+			phone: "",
+			type: "personal"
+		});
+	};
+
 	return (
-		<form>
+		<form onSubmit={onSubmit}>
 			<h3 className='text-primary'>Add Contact</h3>
 			<input
 				type='text'
 				placeholder='Name'
 				name='name'
-				value={name}
+				value={name} // value will pertain to state
 				onChange={onChange}
 			/>
 			<input
@@ -42,18 +53,27 @@ const ContactForm = () => {
 				value={phone} // phone will now equal the value of the user's input
 				onChange={onChange}
 			/>
+			{/* RADIO BUTTONS FOR CONTACT TYPE: Professional or Personal */}
 			<h5>Contact Type:</h5>
-			<input type='radio' name='type' value='personal' checked={type === "personal"} />
+			{/* Personl by default; {' '} for adding in a space */}
+			<input
+				type='radio'
+				name='type'
+				value='personal'
+				checked={type === "personal"}
+				onChange={onChange}
+			/>
 			Personal{" "}
-			{/* if the current type is personal, then have it checked otherwise, check the professional; it's personal by default */}
 			<input
 				type='radio'
 				name='type'
 				value='professional'
 				checked={type === "professional"}
+				onChange={onChange}
 			/>
-			Professional {/* Add Submit Button */}
+			Professional
 			<div>
+				{/* Add Submit Button */}
 				<input type='submit' value='Add Contact' className='btn btn-primary btn-block' />
 			</div>
 		</form>
@@ -72,7 +92,22 @@ the ContactForm will be used to add and update contacts;
     - create/define onClick handler
 - Step 2: repeat for email, phone and type, changing each accordingly.     
 - Step 3: Add inputs and Button to Add the contact
-- Step 4: Create the functionality for the "onChange" handler
-	- pass in the event
+- Step 4: Create the functionality for the "onChange" handler to update state
+
+---------------------------------------------------------------------------------------------------------------------
+Handling Multiple Inputs in React:
+	- When you need to handle multiple controlled input elements, you can add a name attribute to each element and let the 
+		handler function choose what to do based on the value of event.target.name.
+		EXAMPLE of how you would use this --> [name]: value
+
+
+
+-------------_____________--------------->
+
+Next: Once we fill out the 'add contact' form and click it, we need to add it to state
+- ** Things you must know... if you are working with state, need to make sure to bring it in. (know we need to use ContactContext and useContext hook)
+- Once you bring in the state via context, I can then start creating functionality to add a contact
+
+
 
 */
