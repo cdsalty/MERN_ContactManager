@@ -5,13 +5,14 @@ import ContactContext from "../../context/contact/contactContext"; // to access 
 
 const ContactItem = ({contact}) => {
 	const contactContext = useContext(ContactContext); // to access the deleteContact method
-	const {deleteContact} = contactContext; // de-structuring out the deleteContact method from the contactContext
+	const {deleteContact, setCurrent, clearCurrent} = contactContext; // de-structuring out the deleteContact method from the contactContext
 
 	// destructure and take out what is needed to display in the ContactItem return
 	const {id, name, email, phone, type} = contact;
 
 	const onDelete = () => {
 		deleteContact(id); // still need to create deleteContact functionility inside the ContactState component
+		clearCurrent();
 	};
 
 	return (
@@ -41,7 +42,14 @@ const ContactItem = ({contact}) => {
 					</li>
 				)}
 			</ul>
-			<button className='btn btn-dark btn-sm'>Edit</button>
+			<button
+				className='btn btn-dark btn-sm'
+				onClick={() => {
+					setCurrent(contact); // created inside contactstate.js
+				}}
+			>
+				Edit
+			</button>
 			<button className='btn btn-danger btn-sm' onClick={onDelete}>
 				Delete
 			</button>

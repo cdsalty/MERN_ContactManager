@@ -21,6 +21,16 @@ export default (state, action) => {
 				contacts: state.contacts.filter(contact => contact.id !== action.payload)
 				// contacts: contacts.filter(contact => where the contact id is not equal to all contacts that are not the current id)
 			};
+		case SET_CURRENT:
+			return {
+				...state,
+				current: action.payload // the entire object
+			};
+		case CLEAR_CURRENT:
+			return {
+				...state,
+				current: null // set the object back to null
+			};
 		default:
 			return state;
 	}
