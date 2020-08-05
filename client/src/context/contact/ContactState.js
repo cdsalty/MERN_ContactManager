@@ -37,7 +37,9 @@ const ContactState = props => {
 				phone: "555-555-5555",
 				type: "professional"
 			}
-		]
+		],
+		// current: null -> where I will place a contact when it's clicked to be edited
+		current: null
 	};
 
 	// pull out "state and dispatch" from "useReducer" (will be used to access the contacts states in the provider value)
@@ -58,8 +60,14 @@ const ContactState = props => {
 	};
 
 	// SET CURRENT Contact
+	const setCurrent = contact => {
+		dispatch({type: SET_CURRENT, payload: contact});
+	};
 
-	// CLEAR CURRENT Contact
+	// CLEAR CURRENT Contact (doesn't take in a parameter nor a payload because it will be set back to the null state)
+	const clearCurrent = contact => {
+		dispatch({type: CLEAR_CURRENT});
+	};
 
 	// UPDATE Contact
 
