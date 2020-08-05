@@ -1,10 +1,18 @@
 //to have each individual contact in the list to have it's own component.
-import React from "react";
+import React, {useContext} from "react";
 import PropTypes from "prop-types";
+import ContactContext from "../../context/contact/contactContext"; // to access the deleteContact method in ContactState
 
 const ContactItem = ({contact}) => {
+	const contactContext = useContext(ContactContext); // to access the deleteContact method
+	const {deleteContact} = contactContext; // de-structuring out the deleteContact method from the contactContext
+
 	// destructure and take out what is needed to display in the ContactItem return
-	const {id, name, email, phone, type} = contact; // ?? I'm pulling out the specifics from the contact prop.
+	const {id, name, email, phone, type} = contact;
+
+	const onDelete = () => {
+		deleteContact(id); // still need to create deleteContact functionility inside the ContactState component
+	};
 
 	return (
 		<div className='card bg-light'>
@@ -34,7 +42,9 @@ const ContactItem = ({contact}) => {
 				)}
 			</ul>
 			<button className='btn btn-dark btn-sm'>Edit</button>
-			<button className='btn btn-danger btn-sm'>Delete</button>
+			<button className='btn btn-danger btn-sm' onClick={onDelete}>
+				Delete
+			</button>
 		</div>
 	);
 };

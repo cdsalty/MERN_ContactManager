@@ -13,7 +13,7 @@ import {
 } from "../types"; // only adding the one's that deal with contacts
 
 // Create the Inital State: (initial value will be contacts; but further along, I will have request made to the backend to fill this)
-const ContactState = (props) => {
+const ContactState = props => {
 	const initialState = {
 		contacts: [
 			{
@@ -46,13 +46,16 @@ const ContactState = (props) => {
 	// List of ACTINS
 
 	// ADD Contact
-	const addContact = (contact) => {
+	const addContact = contact => {
 		contact.id = uuidv4(); // will use mongo id at later point
 		dispatch({type: ADD_CONTACT, payload: contact}); // dispatch this type and what to include in the payload.
 	};
 	// ** Be sure to pass it to the Provider to access it (anytime you want to access through a component from our contacts, it must be added here.)
 
 	// DELETE Contact
+	const deleteContact = id => {
+		dispatch({type: DELETE_CONTACT, payload: id});
+	};
 
 	// SET CURRENT Contact
 
@@ -71,7 +74,8 @@ const ContactState = (props) => {
 			// { props.children } tells React where the child components will be rendered
 			value={{
 				contacts: state.contacts,
-				addContact
+				addContact,
+				deleteContact
 			}}
 		>
 			{props.children}
