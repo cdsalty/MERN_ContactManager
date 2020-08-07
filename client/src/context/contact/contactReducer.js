@@ -15,6 +15,14 @@ export default (state, action) => {
 				...state,
 				contacts: [...state.contacts, action.payload]
 			};
+		case UPDATE_CONTACT:
+			return {
+				...state,
+				// map and for each contact, check the id to see if it matches the id being passed in the payload; return the new contact or return as is
+				contacts: state.contacts.map(contact =>
+					contact.id === action.payload.id ? action.payload : contact
+				)
+			};
 		case DELETE_CONTACT:
 			return {
 				...state,

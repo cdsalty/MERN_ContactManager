@@ -6,7 +6,7 @@ const ContactForm = () => {
 	const contactContext = useContext(ContactContext);
 
 	// Destructure contactContext
-	const {addContact, clearCurrent, current} = contactContext;
+	const {addContact, clearCurrent, updateContact, current} = contactContext;
 
 	// Bring in 'useEffect' hook (runs if the contactContext or the current state is changed) (IF/WHEN USER CLICKS THE EDIT BUTTON)
 	useEffect(() => {
@@ -39,13 +39,12 @@ const ContactForm = () => {
 	const onSubmit = e => {
 		e.preventDefault();
 		// contactContext.addContact(contact)
-		addContact(contact); // once the form is submitted, it will look for addContact in ContactState and pass in the contact object
-		setContact({
-			name: "",
-			email: "",
-			phone: "",
-			type: "personal"
-		});
+		if (current === null) {
+			addContact(contact); // once the form is submitted, it will look for addContact in ContactState and pass in the contact object
+		} else {
+			updateContact(contact);
+		}
+		clearAll();
 	};
 
 	const clearAll = () => {
