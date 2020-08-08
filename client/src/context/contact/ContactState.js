@@ -75,6 +75,7 @@ const ContactState = props => {
 	};
 
 	// FILTER Contacts
+	const filterContacts = text => {};
 
 	// CLEAR FILTER for Contacts (from any filter created from above function)
 
