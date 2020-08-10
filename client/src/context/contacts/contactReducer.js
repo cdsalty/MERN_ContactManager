@@ -39,6 +39,20 @@ export default (state, action) => {
 				...state,
 				current: null // set the object back to null
 			};
+		// Filtering Contacts (via contact or email)
+		case FILTER_CONTACTS:
+			return {
+				...state,
+				filtered: state.contacts.filter(contact => {
+					const regex = new RegExp(`${action.payload}`, "gi"); // regex = the payload coming in; g: globally, i: insensitive, not case specific
+					return contact.name.match(regex) || contact.email.match(regex);
+				})
+			};
+		case CLEAR_FILTER:
+			return {
+				...state,
+				filtered: null
+			};
 		default:
 			return state;
 	}

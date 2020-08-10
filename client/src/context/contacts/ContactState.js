@@ -39,7 +39,9 @@ const ContactState = props => {
 			}
 		],
 		// current: null -> where I will place a contact when it's clicked to be edited
-		current: null
+		current: null,
+		// additional piece of state for filtering contacts
+		filtered: null
 	};
 
 	// pull out "state and dispatch" from "useReducer" (will be used to access the contacts states in the provider value)
@@ -75,9 +77,14 @@ const ContactState = props => {
 	};
 
 	// FILTER Contacts
-	const filterContacts = text => {};
+	const filterContacts = text => {
+		dispatch({type: FILTER_CONTACTS, payload: text});
+	};
 
-	// CLEAR FILTER for Contacts (from any filter created from above function)
+	// CLEAR FILTER for Contacts (from any filter created from above function; setting it back to null)
+	const clearFilter = contact => {
+		dispatch({type: CLEAR_FILTER});
+	};
 
 	// return the providers in order to wrap the entire application with this context
 	return (
@@ -87,11 +94,14 @@ const ContactState = props => {
 			value={{
 				contacts: state.contacts,
 				current: state.current,
+				filtered: state.filtered,
 				addContact,
 				deleteContact,
 				setCurrent,
 				clearCurrent,
-				updateContact
+				updateContact,
+				filterContacts,
+				clearFilter
 			}}
 		>
 			{props.children}
