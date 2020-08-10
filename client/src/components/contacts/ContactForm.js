@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect} from "react"; // to submit and add contacts to state, need useContext
-import ContactContext from "../../context/contacts/contactContext"; // to access state
+import ContactContext from "../../context/contact/contactContext"; // to access state
 
 const ContactForm = () => {
 	// initialize context to use(to give access to any state or methods; we need a function: addContact)

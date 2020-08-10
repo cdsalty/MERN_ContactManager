@@ -8,15 +8,23 @@ const Contacts = () => {
 	const contactContext = useContext(ContactContext); // current state represents an array of objects
 
 	// pull out/destructure contacts fom the contactContext function inside ContactState to access state
-	const {contacts} = contactContext;
+	const {contacts, filtered} = contactContext;
+
+	if (contacts.length === 0) {
+		return <h4>Please add contact(s)</h4>;
+	}
+
+	// filtered: need to search if filtered is not empty, is not null; in other words, if there is text inside the input box, then start calling this function/component
 
 	return (
 		<Fragment>
-			{contacts.map((contact) => (
-				// <h4>{contact.name}</h4>
-				// passing the props: key, contact
-				<ContactItem key={contact.id} contact={contact} />
-			))}
+			{filtered !== null
+				? filtered.map(contact => <ContactItem key={contact.id} contact={contact} />)
+				: contacts.map(contact => (
+						// <h4>{contact.name}</h4>
+						// passing the props: key, contact
+						<ContactItem key={contact.id} contact={contact} />
+				  ))}
 		</Fragment>
 	);
 };
