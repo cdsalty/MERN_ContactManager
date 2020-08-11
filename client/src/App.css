@@ -384,7 +384,7 @@ table th {
 	margin-right: 0.6rem;
 }
 
-/* Animation (Add After) */
+/* Animation (Add After) REACT TRANSISTION GROUP */
 .item-enter {
 	opacity: 0;
 }
