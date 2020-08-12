@@ -4,23 +4,26 @@ import Navbar from "./components/layout/Navbar";
 import Home from "./components/pages/Home";
 import About from "./components/pages/About";
 import ContactState from "./context/contact/ContactState";
+import AuthState from "./context/contact/AuthState";
 import "./App.css";
 
 const App = () => {
 	return (
-		<ContactState>
-			<Router>
-				<React.Fragment>
-					<Navbar />
-					<div className='container'>
-						<Switch>
-							<Route exact path='/' component={Home} />
-							<Route exact path='/about' component={About} />
-						</Switch>
-					</div>
-				</React.Fragment>
-			</Router>
-		</ContactState>
+		<AuthState>
+			<ContactState>
+				<Router>
+					<React.Fragment>
+						<Navbar />
+						<div className='container'>
+							<Switch>
+								<Route exact path='/' component={Home} />
+								<Route exact path='/about' component={About} />
+							</Switch>
+						</div>
+					</React.Fragment>
+				</Router>
+			</ContactState>
+		</AuthState>
 	);
 };
 
