@@ -22,7 +22,7 @@ const Register = () => {
 
 	return (
 		// 3
-		<div className='form-containter container'>
+		<div className='form-container'>
 			<h1>
 				Account <span className='text-primary'>Register</span>
 			</h1>
