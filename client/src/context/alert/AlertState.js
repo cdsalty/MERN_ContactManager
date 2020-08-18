@@ -1,5 +1,5 @@
 import React, {useReducer} from "react";
-import {v4 as uuidv4} from "uuid"; // contact.id = uuidv4(); (will need since we'll have an array of alerts that need to be unique identifier)
+import {v4 as uuidv4} from "uuid"; // contact.id = uuidv4(); (will need since we'll have an array of alerts; that need to be unique identifier)
 import AlertContext from "./alertContext";
 import alertReducer from "./alertReducer";
 
@@ -17,7 +17,7 @@ const AlertState = props => {
 	// pull out "state and dispatch" from "useReducer"
 	const [state, dispatch] = useReducer(alertReducer, initialState); // state allows access anything inside the state, dispatch for dispatching objects to the reducer
 
-	// Set Alert
+	// ACTION:  SETALERT()
 	const setAlert = (msg, type, timeout = 5000) => {
 		const id = uuidv4(); // generates a random id
 		// call dispatch and set type to Set alert with the payload; (the payload will consist of the message, the type and id)
@@ -25,10 +25,8 @@ const AlertState = props => {
 			type: SET_ALERT,
 			payload: {msg, type, id}
 		});
-		// Next, I want the alert to disappear after a certain amount of time
-		setTimeout(() => {
-			dispatch({type: REMOVE_ALERT, payload: id}), timeout; // dispatch the id of the payload and have the alert removed after 5 seconds
-		});
+		// Alert to disappear after a certain amount of time
+		setTimeout(() => dispatch({type: REMOVE_ALERT, payload: id}), timeout); // dispatch the id of the payload and have the alert removed after 5 seconds
 	};
 
 	// List of ACTIONS
@@ -41,7 +39,7 @@ const AlertState = props => {
 			value={{
 				// the actions of the state
 				alerts: state,
-				setAlert
+				setAlert // action
 			}}
 		>
 			{props.children}
