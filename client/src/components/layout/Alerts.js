@@ -2,11 +2,10 @@ import React, {useContext} from "react";
 import AlertContext from "../../context/alert/alertContext";
 
 const Alerts = () => {
-	const alertContext = useContext(AlertContext); // alertContext represents the functionality inside alertReducer and AlertState
+	const alertContext = useContext(AlertContext);
 
 	return (
-		// check if the lenth of the array is greater than 0. If it is, THEN (&&)... (comes from the value of AlertState.js)
-		alertContext.alerts > 0 &&
+		alertContext.alerts.length > 0 &&
 		alertContext.alerts.map(alert => (
 			<div key={alert.id} className={`alert alert-${alert.type}`}>
 				<i className='fas fa-info-circle' /> {alert.msg}
@@ -18,5 +17,21 @@ const Alerts = () => {
 export default Alerts;
 
 /*
+The goal is to out put this inside the main App.js
 it's going to look at the alerts inside the alertContext; If there IS anything, then we will map through it and output the 'JSX' of the div
+
+This would not work: What is difference:
+// 	const alertContext = useContext(AlertContext); // alertContext represents the functionality inside alertReducer and AlertState
+
+	// 	return (
+	// 		alertContext.alerts.lengths > 0 &&
+	// 		alertContext.alerts.map(alert => (
+	// 			// the className needs to be dynamic since there are different alert types
+	// 			<div key={alert.id} className={`alert alert-${alert.type}`}>
+	// 				<i className='fas fa-info-circle' /> {alert.msg}
+	// 			</div>
+	// 		))
+	// 	);
+	// };
+
 */

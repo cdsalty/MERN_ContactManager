@@ -1,6 +1,14 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
+import AlertContext from "../../context/alert/alertContext";
 // 1
 const Register = () => {
+	// initialize the context
+	const alertContext = useContext(AlertContext);
+
+	// step 7 after creating the AlertState, alertReducer and Alerts, etc.
+	// pull/destructure setAlert from alertContext
+	const {setAlert} = alertContext;
+
 	const [user, setUser] = useState({
 		name: "",
 		email: "",
@@ -16,8 +24,15 @@ const Register = () => {
 	// 6
 	const onSubmit = e => {
 		e.preventDefault();
-		// ultimately, we'll want to sign in the user
-		console.log('Form "REGISTER" was submitted');
+		// step 8: if name, email or password is empty
+		if (name === "" || email === "" || password === "") {
+			setAlert("Please complete all fields", "danger");
+		} else if (password !== password2) {
+			setAlert("Hey phat fingers, you mis-typed your password", "danger");
+		} else {
+			// ultimately, we'll want to sign in the user
+			console.log('The Form "REGISTER," (inside of Register.js) was submitted');
+		}
 	};
 
 	return (
