@@ -1,13 +1,11 @@
 // REGISTRATION:
 const express = require("express");
-
 const router = express.Router();
-
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 
-const {check, validationResult} = require("express-validator"); // https://express-validator.github.io/docs/ (notes said not to use '/check')
+const { check, validationResult } = require("express-validator"); // https://express-validator.github.io/docs/ (notes said not to use '/check')
 
 const User = require("../models/User");
 
@@ -22,7 +20,7 @@ router.post(
 			.not()
 			.isEmpty(),
 		check("email", "Please include a valid email").isEmail(),
-		check("password", "Password must include 6 or more characters").isLength({min: 6})
+		check("password", "Password must include 6 or more characters").isLength({ min: 6 })
 	],
 	async (req, res) => {
 		// res.send(req.body); // returned the user data
@@ -33,12 +31,12 @@ router.post(
 			});
 		}
 		// destructure req.body
-		const {name, email, password} = req.body;
+		const { name, email, password } = req.body;
 		// check if user exist against their password
 		try {
-			let user = await User.findOne({email: email}); // search user via email address
+			let user = await User.findOne({ email: email }); // search user via email address
 			if (user) {
-				return res.status(400).json({msg: "User already exist"});
+				return res.status(400).json({ msg: "User already exist" });
 			}
 			// if user does exist: take the user variable initialzied above and createn a new user with the same properties
 			user = new User({
@@ -68,7 +66,7 @@ router.post(
 				// callback function
 				(err, token) => {
 					if (err) throw err;
-					res.json({token}); // return token
+					res.json({ token }); // return token
 				}
 			);
 		} catch (err) {
