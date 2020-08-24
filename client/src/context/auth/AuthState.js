@@ -27,13 +27,14 @@ const AuthState = props => {
 	// pull out "state and dispatch" from "useReducer"
 	const [state, dispatch] = useReducer(authReducer, initialState); // state allows access anything inside the state, dispatch for dispatching objects to the reducer
 
-	// List of ACTIONS
+	// List of ACTIONS ----> the functions will be called inside other components. Register User inside Register.js is example
 
-	// Load User: for checking which user is logged in
+	// LOAD User: for checking which user is logged in
+	const loadUser = () => console.log('loadUsers')
 
-	// Register User: Sign the user up and get a token back(create a asynchronous function that will take in the formData)
+	// REGISTER User: Sign the user up and get a token back(create a asynchronous function that will take in the formData)
 	const register = async (formData) => {
-		// create config for header
+		// create config for header (required when sending data)
 		const config = {
 			headers: {
 				"Content-Type": "application/json"
@@ -46,10 +47,11 @@ const AuthState = props => {
 			// make request and on success, we should recieve a token with the payload
 			// if everything from the post request is ok, dispatch to the reducer the type and payload
 			// the payload will be the response from above which is the T O K E N
-			const res = await axios.post('/api/users', formData, config);
+			const res = await axios.post('/api/users', formData, config);	// have proxy value in package.json
+			// i will handle the dispatches inside authReducer
 			dispatch({
 				type: REGISTER_SUCCESS,
-				payload: res.data
+				payload: res.data	// the token
 			});
 		} catch (err) {
 			// the catch will be called from the users.js backend when a user already exists, etc. 
@@ -61,13 +63,16 @@ const AuthState = props => {
 
 	}
 
+	// LOGIN User: To Log the user in and get the token
+	const login = () => console.log('User login')
 
 
-	// Login User: To Log the user in and get the token
 
-	// Logout User: To destroy/delete the token
+	// LOGOUT User: To destroy/delete the token
+	const logout = () => console.log('User logout')
 
-	// Clear Errors: To clear out any errors within the state.
+	// CLEAR Errors: To clear out any errors within the state.
+	const clearErrors = () => console.log("clear errors")
 
 	// return the providers in order to wrap the entire application with this context
 	return (
@@ -79,7 +84,13 @@ const AuthState = props => {
 				isAuthenticated: state.isAuthenticated,
 				loading: state.loading,
 				user: state.user,
-				error: state.error
+				error: state.error,
+				// and the functionality
+				register,
+				loadUser,
+				login,
+				logout,
+				clearErrors
 			} }
 		>
 			{ props.children }
